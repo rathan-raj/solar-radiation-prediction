@@ -25,6 +25,10 @@ from datetime import datetime
 # %matplotlib inline
 import seaborn as sns
 import matplotlib.pyplot as plt
+import pickle
+
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import cross_val_score
 
 #reading the csv file using pandas read_csv function
 df = pd.read_csv('SolarPrediction.csv')
@@ -234,9 +238,6 @@ print(f"X_train transformed.shape: {X_train_transform.shape}")
 
 # build a model
 
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import cross_val_score
-
 # Train a RandomForestRegressor model
 forest_reg = RandomForestRegressor()
 forest_reg.fit(X_train_transform, y_train)
@@ -248,3 +249,7 @@ rmse_scores = np.sqrt(-scores)
 print("RMSE scores:", rmse_scores)
 print("Mean RMSE:", rmse_scores.mean())
 print("Standard deviation of RMSE:", rmse_scores.std())
+
+# Save the trained model
+with open("model.pkl", "wb") as f:
+    pickle.dump(forest_reg, f)
